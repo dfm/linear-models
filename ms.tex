@@ -126,16 +126,12 @@ Consider the toy example of searching for exoplanet transits in a stellar light 
 \begin{align}
 p(\bvec{y} | \bvec{\theta}, \bvec{w}) &= \mathcal{N}(\bvec{y}; \bvec{\mu}(\bvec{\theta}) + \bvec{A}\bvec{w}, \bvec{C}) \nonumber\\
 %
-p(\bvec{w}) &= \mathcal{N}(\bvec{w}; 0, \bvec{\Lambda}) \nonumber\\
-%
-p(\bvec{y} | \bvec{\theta}) &= \int p(\bvec{w}) p(\bvec{y} | \bvec{\theta}, \bvec{w}) d\bvec{w}
+p(\bvec{w}) &= \mathcal{N}(\bvec{w}; 0, \bvec{\Lambda}) \nonumber
 \end{align}
 
 \begin{align}
-p(\bvec{y} | \bvec{\theta}) &=  \int \Gaussian{w}{\Lambda}{K} 
-                                     \Gaussian{(\bvec{y} - 
-                                                \bvec{A}\bvec{w})}{\Lambda}{N}
-    
+p(\bvec{y} | \bvec{\theta}) &= \int p(\bvec{w}) p(\bvec{y} | \bvec{\theta}, \bvec{w}) \dd\bvec{w} \\
+&= \int \Gaussian{w}{\bvec{\Lambda}}{K} \Gaussian{(\bvec{y} - \bvec{A}\bvec{w})}{\bvec{C}}{N} \dd\bvec{w}
 \end{align}
 
 \citep{Luger:2017,Luger:2016}
