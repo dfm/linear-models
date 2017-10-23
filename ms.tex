@@ -56,7 +56,6 @@
 \newcommand{\dd}{\ensuremath{\,\mathrm{d}}}
 \newcommand{\unit}[1]{{\ensuremath{\,\mathrm{#1}}}}
 \newcommand{\bvec}[1]{{\ensuremath{\boldsymbol{#1}}}}
-\newcommand{\avec}[1]{{\ensuremath{\boldsymbol{#1}}}}
 
 % TO DOS
 \newcommand{\todo}[3]{{\color{#2}\emph{#1}: #3}}
@@ -118,28 +117,31 @@
 
 \section{Introduction}
 
-Throughout the field of astronomy, observations often involve recovering or fitting features that are small compared to other signals in a dataset. This is true of searches for exoplanets in photometric and radial velocity timeseries, asteroseismology studies, supernovae searches, etc. In all these cases, one is able to recover the desired signals by modeling the other uninteresting (but usually dominant) signals in the dataset, such as detector systematics, stellar variability, or the effects of seeing. More often than not, a true physical model of these nuisance signals is either unknown, too difficult to compute, or dependent on too many (unknown) parameters. A powerful alternative to physical models are linear models, which can be fully informed by the data at hand. A linear model $\avec{m}$ is one that can be constructed from a linear combination of a set of basis vectors $\{\avec{a}_j\}$. In matrix form,
+Throughout the field of astronomy, observations often involve recovering or fitting features that are small compared to other signals in a dataset. This is true of searches for exoplanets in photometric and radial velocity timeseries, asteroseismology studies, supernovae searches, etc. In all these cases, one is able to recover the desired signals by modeling the other uninteresting (but usually dominant) signals in the dataset, such as detector systematics, stellar variability, or the effects of seeing. More often than not, a true physical model of these nuisance signals is either unknown, too difficult to compute, or dependent on too many (unknown) parameters. A powerful alternative to physical models are linear models, which can be fully informed by the data at hand. A linear model $\bvec{m}$ is one that can be constructed from a linear combination of a set of basis vectors $\{\bvec{a}_j\}$. In matrix form,
 %
 \begin{align}
-\avec{m} = \bvec{A} \avec{w}
+\bvec{m} = \bvec{A} \bvec{w}
 \end{align}
 %
-where $\bvec{A}$ is the \emph{design matrix}, whose columns are the basis vectors $\{\avec{a}_j\}$, and $\avec{w}$ is the vector of weights, one for each basis vector.
+where $\bvec{A}$ is the \emph{design matrix}, whose columns are the basis vectors $\{\bvec{a}_j\}$, and $\bvec{w}$ is the vector of weights, one for each basis vector.
 
 Here are some examples where this is done: \citeme.
 
 Consider the toy example of searching for exoplanet transits in a stellar light curve taken from a ground-based telescope in the infrared. The measurement of the light curve is a complicated function of the telescope focus, the seeing at the observation sight, the atmospheric airmass, and the thermal emission from the facility, all of which can be time-variable and depend on additional variables such as the ambient temperature and humidity in nonlinear ways.
 
 \begin{align}
-p(\avec{y} | \avec{\theta}, \avec{w}) &= \mathcal{N}(\avec{y}; \avec{\mu}(\avec{\theta}) + \bvec{A}\avec{w}, \bvec{C}) \nonumber\\
+p(\bvec{y} | \bvec{\theta}, \bvec{w}) &= \mathcal{N}(\bvec{y}; \bvec{\mu}(\bvec{\theta}) + \bvec{A}\bvec{w}, \bvec{C}) \nonumber\\
 %
-p(\avec{w}) &= \mathcal{N}(\avec{w}; 0, \bvec{\Lambda}) \nonumber\\
+p(\bvec{w}) &= \mathcal{N}(\bvec{w}; 0, \bvec{\Lambda}) \nonumber\\
 %
-p(\avec{y} | \avec{\theta}) &= \int p(\avec{w}) p(\avec{y} | \avec{\theta}, \avec{w}) d\avec{w}
+p(\bvec{y} | \bvec{\theta}) &= \int p(\bvec{w}) p(\bvec{y} | \bvec{\theta}, \bvec{w}) d\bvec{w}
 \end{align}
 
 \begin{align}
-p(\avec{y} | \avec{\theta}) &= \Gaussian{w}{\Lambda}{k}
+p(\bvec{y} | \bvec{\theta}) &=  \int \Gaussian{w}{\Lambda}{K} 
+                                     \Gaussian{(\bvec{y} - 
+                                                \bvec{A}\bvec{w})}{\Lambda}{N}
+    
 \end{align}
 
 \citep{Luger:2017,Luger:2016}
