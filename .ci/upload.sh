@@ -1,9 +1,5 @@
 #!/bin/bash -x
 
-if [[ $MCMC_BUILDING_PAPER == false ]]; then
-  return
-fi
-
 # Push to GitHub
 if [ -n "$GITHUB_API_KEY" ]; then
   cd $TRAVIS_BUILD_DIR
