@@ -155,6 +155,7 @@ that can be constructed from a linear combination of a set of basis vectors
 $\{\bvec{a}_j\}$. In matrix form,
 %
 \begin{align}
+\eqlabel{linearmodel}
 \vm = \mA \vw
 \end{align}
 %
@@ -171,7 +172,16 @@ The measurement of the light curve is a complicated function of the telescope
 focus, the seeing at the observation sight, the atmospheric airmass, and the
 thermal emission from the facility, all of which can be time-variable and
 depend on additional variables such as the ambient temperature and humidity
-in nonlinear ways.
+in nonlinear ways. {\color{red} CUT?}
+
+Consider a dataset $\vy$ of $N$ measurements $y_i$ with covariance
+matrix $\mC$. 
+In the common case of data collected with measurement error $\sigma_i$ on 
+individual data points but no correlation across measurements, $\mC$ is a 
+diagonal matrix with $\mC_{ij} = \sigma_{i}\delta_{ij}$, although in general
+the off-diagonal elements capture the covariance between different
+measurements.
+
 
 \begin{align}
 p(\vy | \vt, \vw) &= \Normal(\vy; \vm + \mA \vw, \mC) \nonumber\\
@@ -199,7 +209,7 @@ z &= \vw^\top \mL^{-1} \vw + \vre^\top \mC^{-1} \vre -
      2(\mA \vw)^\top \mC^{-1} \vre + (\mA \vw)^\top \mC^{-1} \mA \vw.
 \end{align}
 %
-The integral in the expression above is easier to evaluate if we
+The integral in \eq{integral} is easier to evaluate if we
 complete the square and write:
 %
 \begin{align}
@@ -227,12 +237,12 @@ p(\vy | \vt) &= \frac{1}{(2 \pi)^\frac{K + N}{2}
                 \exp \left[ -\frac{1}{2}k \right]
                 \int_{-\infty}^{\infty} \exp
                 \left[-\frac{1}{2}(\vw - \vh)^\top \mS^{-1} (\vw - \vh)
-                \right] \dd\vw
+                \right] \dd\vw.
 \end{align}
 %
-The expression in the integral is a Gaussian, which integrates to 
+The integral is that of a Gaussian, which evaluates to 
 $(2\pi)^\frac{K}{2}|\bvec{\Sigma}|^\frac{1}{2}$. 
-Note that by the Matrix Determinant Lemma \citeme, 
+By the Matrix Determinant Lemma \citeme, 
 %
 \begin{align}
 |\mS| = {|\mS^{-1}|}^{-1} = \frac{|\mL| |\mC|}{|\mC + \mA \mL \mA^\top|}.
@@ -245,15 +255,22 @@ Additionally, by the Woodbury Identity \citeme,
 k &= \vre^\top \left( \mC + \mA \mL \mA^\top \right)^{-1} \vre.
 \end{align}
 %
-The expression in \eq{p(y|t)ugly} therefore simplifies to
+Combining these results, the expression in \eq{p(y|t)ugly} therefore simplifies to
 \begin{align}
-\eqlabel{p(y|t)}
+\eqlabel{p(y|t)exp}
 p(\vy | \vt) &= \frac{1}{(2 \pi)^\frac{N}{2}
                 |\mC + \mA \mL \mA^\top|^\frac{1}{2}} 
                 \exp \left[ -\frac{1}{2} \big( \vy - \vm \big)^\top 
-                            (\mC + \mA \mL \mA)^{-1} 
+                            (\mC + \mA \mL \mA^\top)^{-1} 
                             \big( \vy - \vm \big) 
                      \right].
+\end{align}
+This is simply the expression for a normal distribution with mean $\vm$ and covariance
+$\mC + \mA \mL \mA^\top$:
+%
+\begin{align}
+\eqlabel{p(y|t)normal}
+p(\vy | \vt) &= \Normal (\vy; \vm, \mC + \mA \mL \mA^\top).
 \end{align}
 
 Note that this is a convolution or correlation. Note that this leads to a simple result.
