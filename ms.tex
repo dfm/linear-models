@@ -156,7 +156,7 @@ $\{\bvec{a}_j\}$. In matrix form,
 %
 \begin{align}
 \eqlabel{linearmodel}
-\vm = \mA \vw
+\bvec{m} = \mA \vw
 \end{align}
 %
 where $\mA$ is the \emph{design matrix}, whose columns are the basis
@@ -277,6 +277,8 @@ $\mC + \mA \mL \mA^\top$:
 \eqlabel{p(y|t)normal}
 p(\vy | \vt) &= \Normal (\vy; \vm, \mC + \mA \mL \mA^\top).
 \end{align}
+
+We have marginalized over the $\vw$!
 
 Note that this is a convolution or correlation. Note that this leads to a simple result.
 
