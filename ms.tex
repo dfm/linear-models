@@ -1,6 +1,6 @@
 % Copyright 2015-2017 Dan Foreman-Mackey and the co-authors listed below.
 
-\documentclass{rnaastex}
+\documentclass[modern]{rnaastex}
 
 \pdfoutput=1
 
@@ -69,10 +69,10 @@
 % \shortauthors{}
 % \submitted{Submitted to \textit{The Astrophysical Journal}}
 
-\begin{document}
+\begin{document}\raggedbottom\sloppy\sloppypar\frenchspacing
 
 \title{%
-    Linear models
+    Linear models for systematics and nuisances
 }
 
 \author[0000-0002-0296-3826]{Rodrigo Luger}
@@ -87,17 +87,41 @@
 \affil{Center for Data Science, New York University, 60 Fifth Ave, New York, NY 10011, USA}
 \affil{Max-Planck-Institut f\"ur Astronomie, K\"onigstuhl 17, D-69117 Heidelberg}
 
+\begin{abstract}\noindent
+In many astronomical contexts (for example, stellar time-series, or
+high-contrast imaging, or stellar spectroscopy), there is structured
+noise caused by systematic
+effects in the astronomical source, the atmosphere, the telescope, or
+the detector.
+Sometimes housekeeping data (meta-data), and often the science data themselves,
+can be used as predictors of the systematic noise.
+Here we recommend the use of linear models to capture and marginalize
+out these nuisances in the data.
+The linear model can be used to fit and subtract systematics prior to
+investigation of the signals of interest, or it
+can be used in a simultaneous fit of the systematics and the signals.
+In the best case, the linear model is fit simultaneously but then marginalized
+out, leaving nuisance-marginalized likelihood or posterior information
+about the signals of interest.
+We show that if a Gaussian (or extremely wide) prior is placed on the
+amplitudes of the linear components, the marginalization reduces to an
+operation in pure linear algebra, that can (often) be made fast.
+We illustrate our points with \kepler\ time-series data, where the dominant
+systematics for many stars are induced by spacecraft variability;
+we show the effectiveness of a data-driven linear model in revealing
+hard-to-find signals in complex data.
+\end{abstract}
 
 \keywords{%
- %methods: data analysis
- %---
- %methods: statistical
- %---
- %asteroseismology
- %---
- %stars: rotation
- %---
- %planetary systems
+ methods: data analysis
+ ---
+ methods: statistical
+ ---
+ techniques: image processing
+ ---
+ surveys
+ ---
+ planets and satellites: detection
 }
 
 \section{Outline}
@@ -115,17 +139,18 @@
 
 Throughout the field of astronomy, observations often involve recovering or 
 fitting features that are small compared to other signals in a dataset. 
-This is true of searches for exoplanets in photometric and radial velocity 
-timeseries, asteroseismology studies, supernovae searches, etc. 
-In all these cases, one is able to recover the desired signals by modeling the 
-other uninteresting (but usually dominant) signals in the dataset, such as 
-detector systematics, stellar variability, or the effects of seeing. 
-More often than not, a true physical model of these nuisance signals is 
-either unknown, too difficult to compute, or dependent on too many (unknown) 
-parameters. 
-A powerful alternative to physical models are linear models, which can be 
-fully informed by the data at hand. A linear model $\bvec{m}$ is one that can 
-be constructed from a linear combination of a set of basis vectors 
+This is true of searches for exoplanet by transit (cite PDC, DFM, RL), 
+direct-detection (cite Fergus, LOCI), and radial-velocity  (cite something) 
+data sets, asteroseismology measurements, supernovae searches, spectroscopy 
+of stars, and other searches for small or rare signals. In all these cases, 
+one is able to recover the desired signals by modeling the other uninteresting 
+(but usually dominant) signals in the dataset, such as detector systematics, 
+stellar variability, or the effects of seeing. 
+More often than not, a true physical model of these nuisance signals is either 
+unknown, too difficult to compute, or dependent on too many (unknown) 
+parameters. A powerful alternative to physical models are linear models, which 
+can be fully informed by the data at hand. A linear model $\bvec{m}$ is one 
+that can be constructed from a linear combination of a set of basis vectors 
 $\{\bvec{a}_j\}$. In matrix form,
 %
 \begin{align}
@@ -236,6 +261,15 @@ Note that
             \right)^{-1} 
             \bvec{y},
 \end{align}
+
+Note that this is a convolution or correlation. Note that this leads to a simple result.
+
+\acknowledgements
+Thank people:
+  Patrick Cooper (where?),
+  Bernhard Sch\"olkopf (MPI-IS), and
+  Dun Wang (NYU).
+Don't forget facilities tags.
 
 \bibliography{linear}
 
