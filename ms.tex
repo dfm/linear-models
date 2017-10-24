@@ -180,12 +180,17 @@ In the common case of data collected with measurement error $\sigma_i$ on
 individual data points but no correlation across measurements, $\mC$ is a 
 diagonal matrix with $\mC_{ij} = \sigma_{i}\delta_{ij}$, although in general
 the off-diagonal elements capture the covariance between different
-measurements.
-
-
-\begin{align}
-p(\vy | \vt, \vw) &= \Normal(\vy; \vm + \mA \vw, \mC) \nonumber\\
+measurements. Given a linear model as in \eq{linearmodel}, the probability
+of the data under the model is given by a normal distribution with mean 
+$\vm + \mA \vw$ and variance $\mC$:
 %
+\begin{align}
+p(\vy | \vt, \vw) &= \Normal(\vy; \vm + \mA \vw, \mC).
+\end{align}
+In general, as the number of ...
+
+%
+\begin{align}
 p(\vw) &= \Normal(\vw; 0, \mL) \nonumber
 \end{align}
 
