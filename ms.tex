@@ -62,7 +62,7 @@
 \newcommand{\dfmtodo}[1]{\todo{DFM}{red}{#1}}
 \newcommand{\citeme}{{\color{red}(citation needed)}}
 
-\newcommand{\Gaussian}[3]{\ensuremath{\frac{1}{(2\pi)^\frac{#3}{2}|#2|^\frac{1}{2}} 
+\newcommand{\Gaussian}[3]{\ensuremath{\frac{1}{(2\pi)^\frac{#3}{2}|#2|^\frac{1}{2}}
             \exp\left[ -\frac{1}{2}#1^\top #2^{-1} #1 \right]}}
 
 % \shorttitle{}
@@ -87,7 +87,21 @@
 \affil{Center for Data Science, New York University, 60 Fifth Ave, New York, NY 10011, USA}
 \affil{Max-Planck-Institut f\"ur Astronomie, K\"onigstuhl 17, D-69117 Heidelberg}
 
-\begin{abstract}\noindent
+\section{Outline}
+
+\begin{itemize}
+\item Lots of places in astronomy where physical models are too complicated:
+      use linear models; examples.
+\item Describe math stuff
+\item Include Gaussian Process
+\item Include nonlinear model like Dan's transit search
+\item Linear models can capture nonlinear processes b/c of flexibility
+\end{itemize}
+
+
+\section{Introduction}
+
+\noindent
 In many astronomical contexts (for example, stellar time-series, or
 high-contrast imaging, or stellar spectroscopy), there is structured
 noise caused by systematic
@@ -110,73 +124,47 @@ We illustrate our points with \kepler\ time-series data, where the dominant
 systematics for many stars are induced by spacecraft variability;
 we show the effectiveness of a data-driven linear model in revealing
 hard-to-find signals in complex data.
-\end{abstract}
 
-\keywords{%
- methods: data analysis
- ---
- methods: statistical
- ---
- techniques: image processing
- ---
- surveys
- ---
- planets and satellites: detection
-}
-
-\section{Outline}
-
-\begin{itemize}
-\item Lots of places in astronomy where physical models are too complicated: 
-      use linear models; examples.
-\item Describe math stuff
-\item Include Gaussian Process
-\item Include nonlinear model like Dan's transit search
-\item Linear models can capture nonlinear processes b/c of flexibility
-\end{itemize}
-
-\section{Introduction}
-
-Throughout the field of astronomy, observations often involve recovering or 
-fitting features that are small compared to other signals in a dataset. 
-This is true of searches for exoplanet by transit (cite PDC, DFM, RL), 
-direct-detection (cite Fergus, LOCI), and radial-velocity  (cite something) 
-data sets, asteroseismology measurements, supernovae searches, spectroscopy 
-of stars, and other searches for small or rare signals. In all these cases, 
-one is able to recover the desired signals by modeling the other uninteresting 
-(but usually dominant) signals in the dataset, such as detector systematics, 
-stellar variability, or the effects of seeing. 
-More often than not, a true physical model of these nuisance signals is either 
-unknown, too difficult to compute, or dependent on too many (unknown) 
-parameters. A powerful alternative to physical models are linear models, which 
-can be fully informed by the data at hand. A linear model $\bvec{m}$ is one 
-that can be constructed from a linear combination of a set of basis vectors 
+Throughout the field of astronomy, observations often involve recovering or
+fitting features that are small compared to other signals in a dataset.
+This is true of searches for exoplanet by transit (cite PDC, DFM, RL),
+direct-detection (cite Fergus, LOCI), and radial-velocity  (cite something)
+data sets, asteroseismology measurements, supernovae searches, spectroscopy
+of stars, and other searches for small or rare signals. In all these cases,
+one is able to recover the desired signals by modeling the other uninteresting
+(but usually dominant) signals in the dataset, such as detector systematics,
+stellar variability, or the effects of seeing.
+More often than not, a true physical model of these nuisance signals is either
+unknown, too difficult to compute, or dependent on too many (unknown)
+parameters. A powerful alternative to physical models are linear models, which
+can be fully informed by the data at hand. A linear model $\bvec{m}$ is one
+that can be constructed from a linear combination of a set of basis vectors
 $\{\bvec{a}_j\}$. In matrix form,
 %
 \begin{align}
 \bvec{m} = \bvec{A} \bvec{w}
 \end{align}
 %
-where $\bvec{A}$ is the \emph{design matrix}, whose columns are the basis 
-vectors $\{\bvec{a}_j\}$, and $\bvec{w}$ is the vector of weights, one 
+where $\bvec{A}$ is the \emph{design matrix}, whose columns are the basis
+vectors $\{\bvec{a}_j\}$, and $\bvec{w}$ is the vector of weights, one
 for each basis vector.
 
-Here are some examples where this is done: \citeme. 
+Here are some examples where this is done: \citeme.
 \citep{Luger:2017,Luger:2016}
 
-Consider the toy example of searching for exoplanet transits in a stellar 
-light curve taken from a ground-based telescope in the infrared. 
-The measurement of the light curve is a complicated function of the telescope 
-focus, the seeing at the observation sight, the atmospheric airmass, and the 
-thermal emission from the facility, all of which can be time-variable and 
-depend on additional variables such as the ambient temperature and humidity 
+Consider the toy example of searching for exoplanet transits in a stellar
+light curve taken from a ground-based telescope in the infrared.
+The measurement of the light curve is a complicated function of the telescope
+focus, the seeing at the observation sight, the atmospheric airmass, and the
+thermal emission from the facility, all of which can be time-variable and
+depend on additional variables such as the ambient temperature and humidity
 in nonlinear ways.
 
 \begin{align}
-p(\bvec{y} | \bvec{\theta}, \bvec{w}) &= 
-    \mathcal{N}(\bvec{y}; 
-                \bvec{\mu}(\bvec{\theta}) + \bvec{A}\bvec{w}, 
-                \bvec{C}) 
+p(\bvec{y} | \bvec{\theta}, \bvec{w}) &=
+    \mathcal{N}(\bvec{y};
+                \bvec{\mu}(\bvec{\theta}) + \bvec{A}\bvec{w},
+                \bvec{C})
                 \nonumber\\
 %
 p(\bvec{w}) &= \mathcal{N}(\bvec{w}; 0, \bvec{\Lambda}) \nonumber
@@ -184,17 +172,17 @@ p(\bvec{w}) &= \mathcal{N}(\bvec{w}; 0, \bvec{\Lambda}) \nonumber
 
 \begin{align}
 \label{eq:integral}
-p(\bvec{y} | \bvec{\theta}) &= 
-    \int p(\bvec{w}) p(\bvec{y} | \bvec{\theta}, \bvec{w}) \dd\bvec{w} 
+p(\bvec{y} | \bvec{\theta}) &=
+    \int p(\bvec{w}) p(\bvec{y} | \bvec{\theta}, \bvec{w}) \dd\bvec{w}
     \nonumber \\
 %
-&= \int \Gaussian{\bvec{w}}{\bvec{\Lambda}}{K} 
-        \Gaussian{(\bvec{y} - \bvec{A}\bvec{w})}{\bvec{C}}{N} 
+&= \int \Gaussian{\bvec{w}}{\bvec{\Lambda}}{K}
+        \Gaussian{(\bvec{y} - \bvec{A}\bvec{w})}{\bvec{C}}{N}
         \dd\bvec{w} \nonumber \\
 %
 &= \frac{1}{(2\pi)^\frac{K+N}{2}
         |\bvec{\Lambda}|^\frac{1}{2}
-        |\bvec{C}|^\frac{1}{2}} 
+        |\bvec{C}|^\frac{1}{2}}
    \int \exp\left[ -\frac{1}{2} \bvec{Z} \right] \dd\bvec{w}
 \end{align}
 %
@@ -202,50 +190,50 @@ where
 %
 \begin{align}
 \label{eq:Z}
-\bvec{Z} &= \bvec{w}^\top\bvec{\Lambda}^{-1}\bvec{w} + 
+\bvec{Z} &= \bvec{w}^\top\bvec{\Lambda}^{-1}\bvec{w} +
             \bvec{y}^\top\bvec{C}^{-1}\bvec{y} -
             2(\bvec{A}\bvec{w})^\top \bvec{C}^{-1} \bvec{y} +
             (\bvec{A}\bvec{w})^\top \bvec{C}^{-1} \bvec{A}\bvec{w}.
 \end{align}
 %
-The integral in the expression above is easier to evaluate if we 
+The integral in the expression above is easier to evaluate if we
 complete the square and write:
 %
 \begin{align}
 \label{eq:Z_square}
-\bvec{Z} &= (\bvec{w} - \bvec{h})^\top \bvec{\Sigma}^{-1} 
+\bvec{Z} &= (\bvec{w} - \bvec{h})^\top \bvec{\Sigma}^{-1}
             (\bvec{w} - \bvec{h}) + \bvec{k}
 \end{align}
 %
 where by comparison with (\ref{eq:Z}) it is straightforward to show that
 %
 \begin{align}
-\bvec{\Sigma}^{-1} &\equiv \bvec{\Lambda}^{-1} + 
+\bvec{\Sigma}^{-1} &\equiv \bvec{\Lambda}^{-1} +
                            \bvec{A}^\top \bvec{C}^{-1} \bvec{A} \\
 %
 \bvec{h} &\equiv \bvec{\Sigma}\bvec{A}^\top \bvec{C}^{-1} \bvec{y} \\
 %
-\bvec{k} &\equiv \bvec{y}^\top 
-            \left( 
-            \bvec{C}^{-1} - 
+\bvec{k} &\equiv \bvec{y}^\top
+            \left(
+            \bvec{C}^{-1} -
             \bvec{C}^{-1} \bvec{A} \bvec{\Sigma} \bvec{A}^\top \bvec{C}^{-1}
             \right) \bvec{y}.
 \end{align}
 We may thus write
 %
 \begin{align}
-p(\bvec{y} | \bvec{\theta}) &= 
+p(\bvec{y} | \bvec{\theta}) &=
         \frac{1}{(2\pi)^\frac{K+N}{2}
         |\bvec{\Lambda}|^\frac{1}{2}
-        |\bvec{C}|^\frac{1}{2}} 
+        |\bvec{C}|^\frac{1}{2}}
     \exp
     \left[
-        -\frac{1}{2} 
+        -\frac{1}{2}
         \bvec{k}
     \right]
    \int \exp
-        \left[ 
-            -\frac{1}{2} 
+        \left[
+            -\frac{1}{2}
             (\bvec{w} - \bvec{h})^\top \bvec{\Sigma}^{-1} (\bvec{w} - \bvec{h})
         \right]
      \dd\bvec{w}
@@ -255,10 +243,10 @@ p(\bvec{y} | \bvec{\theta}) &=
 %
 Note that
 \begin{align}
-\bvec{k} &= \bvec{y}^\top 
-            \left( 
+\bvec{k} &= \bvec{y}^\top
+            \left(
             \bvec{C} + \bvec{A}\bvec{\Lambda}\bvec{A}^\top
-            \right)^{-1} 
+            \right)^{-1}
             \bvec{y},
 \end{align}
 
@@ -266,7 +254,7 @@ Note that this is a convolution or correlation. Note that this leads to a simple
 
 \acknowledgements
 Thank people:
-  Patrick Cooper (where?),
+  Patrick Cooper (Duquesne),
   Bernhard Sch\"olkopf (MPI-IS), and
   Dun Wang (NYU).
 Don't forget facilities tags.
