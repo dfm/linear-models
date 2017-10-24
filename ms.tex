@@ -88,7 +88,8 @@
 
 \begin{abstract}
 In many astronomical contexts (for example, stellar time-series, or
-high-contrast imaging), there is structured noise caused by systematic
+high-contrast imaging, or stellar spectroscopy), there is structured
+noise caused by systematic
 effects in the astronomical source, the atmosphere, the telescope, or
 the detector.
 Sometimes housekeeping data (meta-data), and often the science data themselves,
@@ -115,13 +116,11 @@ hard-to-find signals in complex data.
  ---
  methods: statistical
  ---
- four
+ techniques: image processing
  ---
- other
+ surveys
  ---
- ApJ
- ---
- keywords
+ planets and satellites: detection
 }
 
 \section{Outline}
@@ -136,7 +135,7 @@ hard-to-find signals in complex data.
 
 \section{Introduction}
 
-Throughout the field of astronomy, observations often involve recovering or fitting features that are small compared to other signals in a dataset. This is true of searches for exoplanet by transit (cite PDC, DFM, RL), direct-detection (cite Fergus, LOCI), and radial-velocity  (cite something) data sets, asteroseismology measurements, supernovae searches, and other searches for small or rare signals. In all these cases, one is able to recover the desired signals by modeling the other uninteresting (but usually dominant) signals in the dataset, such as detector systematics, stellar variability, or the effects of seeing. More often than not, a true physical model of these nuisance signals is either unknown, too difficult to compute, or dependent on too many (unknown) parameters. A powerful alternative to physical models are linear models, which can be fully informed by the data at hand. A linear model $\bvec{m}$ is one that can be constructed from a linear combination of a set of basis vectors $\{\bvec{a}_j\}$. In matrix form,
+Throughout the field of astronomy, observations often involve recovering or fitting features that are small compared to other signals in a dataset. This is true of searches for exoplanet by transit (cite PDC, DFM, RL), direct-detection (cite Fergus, LOCI), and radial-velocity  (cite something) data sets, asteroseismology measurements, supernovae searches, spectroscopy of stars, and other searches for small or rare signals. In all these cases, one is able to recover the desired signals by modeling the other uninteresting (but usually dominant) signals in the dataset, such as detector systematics, stellar variability, or the effects of seeing. More often than not, a true physical model of these nuisance signals is either unknown, too difficult to compute, or dependent on too many (unknown) parameters. A powerful alternative to physical models are linear models, which can be fully informed by the data at hand. A linear model $\bvec{m}$ is one that can be constructed from a linear combination of a set of basis vectors $\{\bvec{a}_j\}$. In matrix form,
 %
 \begin{align}
 \bvec{m} = \bvec{A} \bvec{w}
@@ -161,6 +160,13 @@ p(\bvec{y} | \bvec{\theta}) &= \int p(\bvec{w}) p(\bvec{y} | \bvec{\theta}, \bve
 Note that this is a convolution or correlation. Note that this leads to a simple result.
 
 \citep{Luger:2017,Luger:2016}
+
+\acknowledgements
+Thank people:
+  Patrick Cooper (where?),
+  Bernhard Sch\"olkopf (MPI-IS), and
+  Dun Wang (NYU).
+Don't forget facilities tags.
 
 \bibliography{linear}
 
