@@ -176,7 +176,7 @@ p(\bvec{y} | \bvec{\theta}) &=
     \nonumber \\
 %
 &= \int \Gaussian{\bvec{w}}{\bvec{\Lambda}}{K}
-        \Gaussian{(\bvec{y} - \bvec{A}\bvec{w})}{\bvec{C}}{N}
+        \Gaussian{(\bvec{r} - \bvec{A}\bvec{w})}{\bvec{C}}{N}
         \dd\bvec{w} \nonumber \\
 %
 &= \frac{1}{(2\pi)^\frac{K+N}{2}
@@ -185,13 +185,13 @@ p(\bvec{y} | \bvec{\theta}) &=
    \int \exp\left[ -\frac{1}{2} \bvec{Z} \right] \dd\bvec{w}
 \end{align}
 %
-where
+where we have used $\bvec{r} = \bvec{y} - \bvec{\mu}(\bvec{\theta})$ and
 %
 \begin{align}
 \label{eq:Z}
 \bvec{Z} &= \bvec{w}^\top\bvec{\Lambda}^{-1}\bvec{w} +
-            \bvec{y}^\top\bvec{C}^{-1}\bvec{y} -
-            2(\bvec{A}\bvec{w})^\top \bvec{C}^{-1} \bvec{y} +
+            \bvec{r}^\top\bvec{C}^{-1}\bvec{r} -
+            2(\bvec{A}\bvec{w})^\top \bvec{C}^{-1} \bvec{r} +
             (\bvec{A}\bvec{w})^\top \bvec{C}^{-1} \bvec{A}\bvec{w}.
 \end{align}
 %
@@ -210,13 +210,13 @@ where by comparison with (\ref{eq:Z}) it is straightforward to show that
 \bvec{\Sigma}^{-1} &\equiv \bvec{\Lambda}^{-1} +
                            \bvec{A}^\top \bvec{C}^{-1} \bvec{A} \\
 %
-\bvec{h} &\equiv \bvec{\Sigma}\bvec{A}^\top \bvec{C}^{-1} \bvec{y} \\
+\bvec{h} &\equiv \bvec{\Sigma}\bvec{A}^\top \bvec{C}^{-1} \bvec{r} \\
 %
-\bvec{k} &\equiv \bvec{y}^\top
+\bvec{k} &\equiv \bvec{r}^\top
             \left(
             \bvec{C}^{-1} -
             \bvec{C}^{-1} \bvec{A} \bvec{\Sigma} \bvec{A}^\top \bvec{C}^{-1}
-            \right) \bvec{y}.
+            \right) \bvec{r}.
 \end{align}
 We may thus write
 %
@@ -242,11 +242,11 @@ p(\bvec{y} | \bvec{\theta}) &=
 %
 Note that
 \begin{align}
-\bvec{k} &= \bvec{y}^\top
+\bvec{k} &= \bvec{r}^\top
             \left(
             \bvec{C} + \bvec{A}\bvec{\Lambda}\bvec{A}^\top
             \right)^{-1}
-            \bvec{y},
+            \bvec{r},
 \end{align}
 
 Note that this is a convolution or correlation. Note that this leads to a simple result.
