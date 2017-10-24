@@ -60,6 +60,7 @@
 % TO DOS
 \newcommand{\todo}[3]{{\color{#2}\emph{#1}: #3}}
 \newcommand{\dfmtodo}[1]{\todo{DFM}{red}{#1}}
+\newcommand{\alltodo}[1]{\todo{TEAM}{red}{#1}}
 \newcommand{\citeme}{{\color{red}(citation needed)}}
 
 \newcommand{\Gaussian}[3]{\ensuremath{\frac{1}{(2\pi)^\frac{#3}{2}|#2|^\frac{1}{2}}
@@ -122,57 +123,50 @@ effects in the astronomical source, the atmosphere, the telescope, or
 the detector.
 Sometimes housekeeping data (meta-data), and often the science data themselves,
 can be used as predictors of the systematic noise.
-Here we recommend the use of linear models to capture and marginalize
-out these nuisances in the data.
-The linear model can be used to fit and subtract systematics prior to
-investigation of the signals of interest, or it
-can be used in a simultaneous fit of the systematics and the signals.
-In the best case, the linear model is fit simultaneously but then marginalized
-out, leaving nuisance-marginalized likelihood or posterior information
-about the signals of interest.
-We show that if a Gaussian (or extremely wide) prior is placed on the
-amplitudes of the linear components, the marginalization reduces to an
-operation in pure linear algebra, that can (often) be made fast.
-We illustrate our points with \kepler\ time-series data, where the dominant
-systematics for many stars are induced by spacecraft variability;
-we show the effectiveness of a data-driven linear model in revealing
-hard-to-find signals in complex data.
+Linear models are often used as computationally tractable, data-driven models
+that can capture these nuisances.
+These linear models can be used to fit and subtract systematics prior to
+investigation of the signals of interest, or they can be used in a
+simultaneous fit of the systematics and the signals.
+In this note, we derive the commonly used but rarely discussed fact that if a
+Gaussian (or extremely wide) prior is placed on the amplitudes of the linear
+components, the marginalization reduces to an operation in pure linear
+algebra, that can (often) be made fast.
+We illustrate this model by demonstrating the applicability of linear model
+for the non-linear systematics in \kepler\ time-series data, where the dominant
+noise source for many stars is the spacecraft motion.
 
-Throughout the field of astronomy, observations often involve recovering or
-fitting features that are small compared to other signals in a dataset.
-This is true of searches for exoplanet by transit (cite PDC, DFM, RL),
-direct-detection (cite Fergus, LOCI), and radial-velocity  (cite something)
-data sets, asteroseismology measurements, supernovae searches, spectroscopy
-of stars, and other searches for small or rare signals. In all these cases,
-one is able to recover the desired signals by modeling the other uninteresting
-(but usually dominant) signals in the dataset, such as detector systematics,
-stellar variability, or the effects of seeing.
-More often than not, a true physical model of these nuisance signals is either
-unknown, too difficult to compute, or dependent on too many (unknown)
-parameters. A powerful alternative to physical models are linear models, which
-can be fully informed by the data at hand. A linear model $\bvec{m}$ is one
-that can be constructed from a linear combination of a set of basis vectors
-$\{\bvec{a}_j\}$. In matrix form,
+The target of many astronomical studies is the recovery of tiny astrophysical
+signals living in a sea of uninteresting (but usually dominant) noise.
+More often than not, evaluation of the true physical model for these nuisances
+is computationally intractable and dependent on too many (unknown) parameters
+to allow rigorous probabilistic inference.
+A powerful alternative to physical models are flexible data-driven models that
+can reliably predict the systematic trends in a computationally tractable
+framework.
+A linear model\footnote{In this context, when we say ``linear'' we are
+referring to a broad class of models including things like polynomials of the
+inputs or Fourier models.} is written as
 %
 \begin{align}
 \eqlabel{linearmodel}
-\bvec{m} = \mA \vw
+\bvec{y} = \mA \vw + \mathrm{noise}
 \end{align}
 %
 where $\mA$ is the \emph{design matrix}, whose columns are the basis
 vectors $\{\bvec{a}_j\}$, and $\vw$ is the vector of weights, one
 for each basis vector.
 
-Here are some examples where this is done: \citeme.
-\citep{Luger:2017,Luger:2016}
-
-Consider the toy example of searching for exoplanet transits in a stellar
-light curve taken from a ground-based telescope in the infrared.
-The measurement of the light curve is a complicated function of the telescope
-focus, the seeing at the observation sight, the atmospheric airmass, and the
-thermal emission from the facility, all of which can be time-variable and
-depend on additional variables such as the ambient temperature and humidity
-in nonlinear ways. {\color{red} CUT?}
+Such models have been used to describe the systematics in astrophysical time
+series data \citep{Smith:2012, Wang:2016, Luger:2016}, galaxy spectra
+\citep{Tsalmantza:2012, Ness:2015}, \alltodo{ADD MORE REFERENCES}.
+One issue with flexible data-driven models, however, is their tendency to
+over-fit and reduce the astrophysical signal of interest.
+This is generally tackled using a dimensionality reduction technique like
+principal component analysis (PCA) or by applying priors/regularization to the
+weights vector $\vw$.
+In the following derivation, we show that, if this prior is Gaussian, then the
+marginalization over $\vw$ is analytic and easy to compute.
 
 Consider a dataset $\vy$ of $N$ measurements $y_i$ with covariance
 matrix $\mC$.
@@ -180,22 +174,26 @@ In the common case of data collected with measurement error $\sigma_i$ on
 individual data points but no correlation across measurements, $\mC$ is a
 diagonal matrix with $\mC_{ij} = \sigma_{i}\delta_{ij}$, although in general
 the off-diagonal elements capture the covariance between different
-measurements. Given a mean function $\vm$  and a linear model as in 
-\eq{linearmodel}, the probability of the data under the model is given by a 
+measurements. Given a mean function $\vm$  and a linear model as in
+\eq{linearmodel}, the probability of the data under the model is given by a
 normal distribution with mean $\vm + \mA \vw$ and variance $\mC$:
 %
-\begin{align}
+\begin{align}\eqlabel{likelihood}
 p(\vy | \vt, \vw) &= \Normal(\vy; \vm + \mA \vw, \mC).
 \end{align}
 %
-Evaluating this expression requires knowledge of the $\vw$, which 
-{\color{red} may not be unique, so we put a prior on it. Magically this also 
-allows us to marginalize over the $\vw$s, which are nuisance params anyway!}
+However, we are specifically not interested in the \emph{value} of $\vw$.
+Instead, we will marginalize over it.
+To perform this marginalization we must place a prior on $\vw$ that we will
+assume to be Gaussian
 %
 \begin{align}
 p(\vw) &= \Normal(\vw; 0, \mL) \nonumber
 \end{align}
-{\color{red} The probability of the data under the model is thus}
+%
+With this prior and likelihood in \eq{likelihood}, we compute the marginalize
+likelihood as
+%
 \begin{align}
 \eqlabel{integral}
 p(\vy | \vt) &= \int_{-\infty}^{\infty} p(\vw) p(\vy | \vt, \vw) \dd\vw \nonumber \\
