@@ -1,5 +1,3 @@
-% Copyright 2015-2017 Dan Foreman-Mackey and the co-authors listed below.
-
 \documentclass[modern]{rnaastex}
 
 \pdfoutput=1
@@ -253,7 +251,6 @@ By the Matrix Determinant Lemma \citeme,
 |\mS| = {|\mS^{-1}|}^{-1} = \frac{|\mL| |\mC|}{|\mC + \mA \mL \mA^\top|}.
 \end{align}
 %
-%
 Additionally, by the Woodbury Identity \citeme,
 %
 \begin{align}
@@ -279,10 +276,30 @@ $\mC + \mA \mL \mA^\top$:
 p(\vy | \vt) &= \Normal (\vy; \vm, \mC + \mA \mL \mA^\top).
 \end{align}
 
-{\color{red} We have marginalized over the $\vw$, and it is magically super
-simple!}
+This marginalized likelihood function can be numerically maximized to find the
+maximum likelihood parameters $\theta^\star$ or this likelihood can be
+multiplied by a prior $p(\theta)$ and used for posterior inference.
+In either case, the evaluation of the model will include the effects of
+marginalizing over $\bvec{w}$ in the linear model and any uncertainties in
+those values will be propagated to the results.
 
-Note that this is a convolution or correlation. Note that this leads to a simple result.
+It is often useful to compute the value of the linear model so that we can
+``remove'' systematics from the data.
+To derive this, we recognize that \eq{p(y|t)normal} is the likelihood of a
+Gaussian Process.
+This means that conditioned on the data and a choice of the parameters
+$\bvec{\theta}$, the systematics will have a Gaussian distribution with mean
+$\bvec{m}$ and covariance $\bvec{\Sigma}_\bvec{m}$ given by
+\citep{Rasmussen:2006}
+%
+\begin{align}
+\bvec{m} &= \mu(\bvec{\theta}) + \mA \mL \mA^\top\, \left[\mC + \mA \mL
+    \mA^\top\right]^{-1}\,\left[\bvec{y} - \mu(\bvec{\theta})\right]
+    \nonumber\\
+\bvec{\Sigma}_\bvec{m} &= \mA \mL \mA^\top - \mA \mL \mA^\top\,
+    \left[\mC + \mA \mL \mA^\top\right]^{-1} \,
+    \mA^\top \mL \mA
+\end{align}
 
 \acknowledgements
 Thank people:
