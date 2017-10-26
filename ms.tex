@@ -17,16 +17,6 @@
 % Projects:
 \newcommand{\project}[1]{\textsf{#1}}
 \newcommand{\kepler}{\project{Kepler}}
-\newcommand{\lsst}{\project{LSST}}
-\newcommand{\tess}{\project{TESS}}
-\newcommand{\celerite}{\project{celerite}}
-\newcommand{\celeriteterm}{\emph{celerite}}
-\newcommand{\emcee}{\project{emcee}}
-
-\newcommand{\foreign}[1]{\emph{#1}}
-\newcommand{\etal}{\foreign{et\,al.}}
-\newcommand{\etc}{\foreign{etc.}}
-\newcommand{\ie}{\foreign{i.e.}}
 
 \newcommand{\figureref}[1]{\ref{fig:#1}}
 \newcommand{\Figure}[1]{Figure~\figureref{#1}}
@@ -95,51 +85,46 @@
 
 \section{}
 
-In many astronomical contexts (for example, stellar time-series, or
-high-contrast imaging, or stellar spectroscopy), there is structured
-noise caused by systematic
+The target of many astronomical studies is the recovery of tiny astrophysical
+signals living in a sea of uninteresting (but usually dominant) noise.
+In many contexts (for example, stellar time-series, or
+high-contrast imaging, or stellar spectroscopy), there are structured
+components to this noise caused by systematic
 effects in the astronomical source, the atmosphere, the telescope, or
 the detector.
+More often than not, evaluation of the true physical model for these nuisances
+is computationally intractable and dependent on too many (unknown) parameters
+to allow rigorous probabilistic inference.
+
 Sometimes housekeeping data, and often the science data themselves,
 can be used as predictors of the systematic noise.
 Linear combinations of these predictors (or linear combinations of non-linear functions
 of these predictors) are often used as
 computationally tractable models that can capture the nuisances.
-These linear models can be used to fit and subtract systematics prior to
+These linear models---that is, linear combinations of (possibly nonlinear) functions
+of various systematic predictors---can be used to fit and subtract systematics prior to
 investigation of the signals of interest, or they can be used in a
 simultaneous fit of the systematics and the signals.
+For our purposes, a \emph{linear model} for data $y$ (or differences $y$ between data and
+a mean model or expectation for those data) can be written in the form
+\begin{align}
+\eqlabel{linearmodel}
+\bvec{y} = \mA \vw + \mathrm{noise}
+\end{align}
+where $\mA$ is a \emph{design matrix}, whose columns are basis
+vectors $\{\bvec{a}_j\}$, and $\vw$ is the vector of weights or amplitudes, one
+for each basis vector.
 
 In this \documentname, we show that if a
-Gaussian (or else extremely wide) prior is placed on the amplitudes of the linear
-components, the amplitudes can be marginalized out with an operation in pure linear
+Gaussian (or else extremely wide) prior is placed on the weights $\vw$ of the linear
+components, the weights can be marginalized out with an operation in pure linear
 algebra, that can (often) be made fast.
 We illustrate this model by demonstrating the applicability of a linear model
 for the non-linear systematics in \kepler\ time-series data, where the dominant
 noise source for many stars is spacecraft motion and variability.
 
-The target of many astronomical studies is the recovery of tiny astrophysical
-signals living in a sea of uninteresting (but usually dominant) noise.
-More often than not, evaluation of the true physical model for these nuisances
-is computationally intractable and dependent on too many (unknown) parameters
-to allow rigorous probabilistic inference.
-A powerful alternative to physical models are flexible data-driven models that
-can reliably predict the systematic trends in a computationally tractable
-framework.
-A linear model\footnote{In this context, when we say ``linear'' we are
-referring to a broad class of models including things like polynomials of the
-inputs or Fourier models.} is written as
-%
-\begin{align}
-\eqlabel{linearmodel}
-\bvec{y} = \mA \vw + \mathrm{noise}
-\end{align}
-%
-where $\mA$ is the \emph{design matrix}, whose columns are the basis
-vectors $\{\bvec{a}_j\}$, and $\vw$ is the vector of weights, one
-for each basis vector.
-
 Such models have been used to describe the systematics in astrophysical time
-series data \citep{Smith:2012, Wang:2016, Luger:2016}, galaxy spectra
+series data \citep{Smith:2012, Wang:2016, Luger:2016}, galaxy or stellar spectra
 \citep{Tsalmantza:2012, Ness:2015}, \alltodo{ADD MORE REFERENCES}.
 One issue with flexible data-driven models, however, is their tendency to
 over-fit and reduce the astrophysical signal of interest.
