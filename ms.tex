@@ -41,14 +41,7 @@
 \newcommand{\eqalt}[1]{Equation~\eqref{#1}}
 \newcommand{\eqlabel}[1]{\label{eq:#1}}
 
-\newcommand{\sectionname}{Section}
-\newcommand{\sectref}[1]{\ref{sect:#1}}
-\newcommand{\Sect}[1]{\sectionname~\sectref{#1}}
-\newcommand{\sect}[1]{\Sect{#1}}
-\newcommand{\sectalt}[1]{\sectref{#1}}
-\newcommand{\App}[1]{Appendix~\sectref{#1}}
-\newcommand{\app}[1]{\App{#1}}
-\newcommand{\sectlabel}[1]{\label{sect:#1}}
+\newcommand{\documentname}{\textsl{Note}}
 
 \newcommand{\T}{\ensuremath{\mathrm{T}}}
 \newcommand{\dd}{\ensuremath{\,\mathrm{d}}}
@@ -94,45 +87,35 @@
 \author[0000-0002-9328-5652]{Daniel Foreman-Mackey}
 \affil{Center for Computational Astrophysics, Flatiron Institute, 162 Fifth Ave, New York, NY 10010, USA}
 
-\author[0000-0003-2866-9403]{David W.\ Hogg}
+\author[0000-0003-2866-9403]{David W. Hogg}
 \affil{Center for Computational Astrophysics, Flatiron Institute, 162 Fifth Ave, New York, NY 10010, USA}
 \affil{Center for Cosmology and Particle Physics, Department of Physics, New York University, 726 Broadway, New York, NY 10003, USA}
 \affil{Center for Data Science, New York University, 60 Fifth Ave, New York, NY 10011, USA}
 \affil{Max-Planck-Institut f\"ur Astronomie, K\"onigstuhl 17, D-69117 Heidelberg}
 
-%\section{Outline}
-
-%\begin{itemize}
-%\item Lots of places in astronomy where physical models are too complicated:
-%      use linear models; examples.
-%\item Describe math stuff
-%\item Include Gaussian Process
-%\item Include nonlinear model like Dan's transit search
-%\item Linear models can capture nonlinear processes b/c of flexibility
-%\end{itemize}
-
-
-\section{Introduction}
+\section{}
 
 In many astronomical contexts (for example, stellar time-series, or
 high-contrast imaging, or stellar spectroscopy), there is structured
 noise caused by systematic
 effects in the astronomical source, the atmosphere, the telescope, or
 the detector.
-Sometimes housekeeping data (meta-data), and often the science data themselves,
+Sometimes housekeeping data, and often the science data themselves,
 can be used as predictors of the systematic noise.
-Linear models are often used as computationally tractable, data-driven models
-that can capture these nuisances.
+Linear combinations of these predictors (or linear combinations of non-linear functions
+of these predictors) are often used as
+computationally tractable models that can capture the nuisances.
 These linear models can be used to fit and subtract systematics prior to
 investigation of the signals of interest, or they can be used in a
 simultaneous fit of the systematics and the signals.
-In this note, we derive the commonly used but rarely discussed fact that if a
-Gaussian (or extremely wide) prior is placed on the amplitudes of the linear
-components, the marginalization reduces to an operation in pure linear
+
+In this \documentname, we show that if a
+Gaussian (or else extremely wide) prior is placed on the amplitudes of the linear
+components, the amplitudes can be marginalized out with an operation in pure linear
 algebra, that can (often) be made fast.
-We illustrate this model by demonstrating the applicability of linear model
+We illustrate this model by demonstrating the applicability of a linear model
 for the non-linear systematics in \kepler\ time-series data, where the dominant
-noise source for many stars is the spacecraft motion.
+noise source for many stars is spacecraft motion and variability.
 
 The target of many astronomical studies is the recovery of tiny astrophysical
 signals living in a sea of uninteresting (but usually dominant) noise.
@@ -302,11 +285,12 @@ $\bvec{m}$ and covariance $\bvec{\Sigma}_\bvec{m}$ given by
 \end{align}
 
 \acknowledgements
-Thank people:
+It is a pleasure to thank
   Patrick Cooper (Duquesne),
+  Boris Leistedt (NYU),
   Bernhard Sch\"olkopf (MPI-IS), and
-  Dun Wang (NYU).
-Don't forget facilities tags.
+  Dun Wang (NYU)
+for helping us understand all of this.
 
 \bibliography{linear}
 
