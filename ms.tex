@@ -78,6 +78,11 @@
 \affil{Center for Data Science, New York University, 60 Fifth Ave, New York, NY 10011, USA}
 \affil{Max-Planck-Institut f\"ur Astronomie, K\"onigstuhl 17, D-69117 Heidelberg}
 
+\keywords{%
+methods: data analysis ---
+methods: statistical
+}
+
 \section{Introduction}
 
 The target of many astronomical studies is the recovery of tiny astrophysical
@@ -114,8 +119,8 @@ for each basis vector.
 
 Similar models have been used to describe the systematics in astrophysical time
 series data \citep{Smith:2012, Wang:2016, Luger:2016}, galaxy or stellar spectra
-\citep{Tsalmantza:2012, Ness:2015}, and imaging (Cite new Wang, Cite Fergus S5)
-\alltodo{ADD MORE REFERENCES}.
+\citep{Tsalmantza:2012, Ness:2015}, and imaging \citep{Fergus:2014,
+Wang:2017}.
 One issue with flexible data-driven models, however, is their tendency to
 over-fit and reduce the astrophysical signal of interest.
 This is generally tackled using a dimensionality reduction technique like
@@ -143,7 +148,7 @@ measurements. Given a mean function $\vm$  and a linear model as in
 normal distribution with mean $\vm + \mA \vw$ and variance $\mC$:
 %
 \begin{align}\eqlabel{likelihood}
-p(\vy | \vt, \vw) &= \Normal(\vy; \vm + \mA \vw, \mC).
+p(\vy | \vt, \vw) &= \Normal(\vy; \vm + \mA \vw, \mC) \quad.
 \end{align}
 %
 However, we are specifically not interested in the \emph{value} of $\vw$.
@@ -152,7 +157,7 @@ To perform this marginalization we must place a prior on $\vw$ that we will
 assume to be Gaussian
 %
 \begin{align}
-p(\vw) &= \Normal(\vw; 0, \mL) \nonumber
+p(\vw) &= \Normal(\vw; 0, \mL) \quad. \nonumber
 \end{align}
 %
 With this prior and likelihood in \eq{likelihood}, our goal is to marginalize
@@ -168,12 +173,12 @@ explicitly solving for the weights $\vw$.
 \section{The solution}
 
 The marginalized likelihood may be expressed as follows (see Appendix):
-
+%
 \begin{align}
 \eqlabel{p(y|t)normal}
-p(\vy | \vt) &= \Normal (\vy; \vm, \mC + \mA \mL \mA^\top).
+p(\vy | \vt) &= \Normal (\vy; \vm, \mC + \mA \mL \mA^\top) \quad.
 \end{align}
-
+%
 This marginalized likelihood function can be numerically maximized to find the
 maximum likelihood parameters $\theta^\star$ or this likelihood can be
 multiplied by a prior $p(\theta)$ and used for posterior inference.
@@ -191,12 +196,12 @@ $\bvec{m}$ and covariance $\bvec{\Sigma}_\bvec{m}$ given by
 \citep{Rasmussen:2006}
 %
 \begin{align}
-\bvec{m} &= \mu(\bvec{\theta}) + \mA \mL \mA^\top  \left[\mC + 
+\bvec{m} &= \mu(\bvec{\theta}) + \mA \mL \mA^\top  \left[\mC +
     \mA \mL \mA^\top\right]^{-1} \left[\bvec{y} - \mu(\bvec{\theta})\right]
     \nonumber\\
-\bvec{\Sigma}_\bvec{m} &= \mA \mL \mA^\top - \mA \mL \mA^\top 
-    \left[\mC + \mA \mL \mA^\top\right]^{-1}  
-    \mA^\top \mL \mA
+\bvec{\Sigma}_\bvec{m} &= \mA \mL \mA^\top - \mA \mL \mA^\top
+    \left[\mC + \mA \mL \mA^\top\right]^{-1}
+    \mA^\top \mL \mA \quad.
 \end{align}
 
 \section{The implications}
@@ -218,14 +223,7 @@ for helping us understand all of this.
 The marginalized likelihood may be expressed as follows:
 \begin{align}
 \eqlabel{integral}
-p(\vy | \vt) 
-%             &= \int_{-\infty}^{\infty} p(\vw) p(\vy | \vt, \vw) \dd\vw \nonumber \\
-%
-%             &= \int_{-\infty}^{\infty} \Gaussian{\vw}{\mL}{K} \nonumber\\
-%             & \quad\quad\quad \times \Gaussian{(\vre - \mA \vw)}{\mC}{N}
-%               \dd\vw \nonumber \\
-%
-             &= \frac{1}{|2\pi\mL|^\frac{1}{2} |2\pi\mC|^\frac{1}{2}}
+p(\vy | \vt) &= \frac{1}{|2\pi\mL|^\frac{1}{2} |2\pi\mC|^\frac{1}{2}}
                 \int_{-\infty}^{\infty} \exp \left[ -\frac{1}{2} z \right] \dd\vw
 \end{align}
 %
@@ -233,8 +231,6 @@ where
 %
 \begin{align}
 \eqlabel{z}
-%z &= \vw^\top \mL^{-1} \vw + \vre^\top \mC^{-1} \vre -
-%     2(\mA \vw)^\top \mC^{-1} \vre + (\mA \vw)^\top \mC^{-1} \mA \vw.
 z &= \vw^\top \mL^{-1} \vw + (\vre - \mA \vw)^\top \mC^{-1} (\vre - \mA \vw)
 \end{align}
 %
@@ -245,7 +241,7 @@ complete the square and write:
 %
 \begin{align}
 \eqlabel{z_square}
-z &= (\vw - \vh)^\top \mS^{-1} (\vw - \vh) + k,
+z &= (\vw - \vh)^\top \mS^{-1} (\vw - \vh) + k \quad,
 \end{align}
 %
 where, by comparison with \eq{z}, it can be shown that
@@ -255,7 +251,8 @@ where, by comparison with \eq{z}, it can be shown that
 %
 \vh &= \bvec{\Sigma} \mA^\top \mC^{-1} \vre \\
 %
-k &= \vre^\top \left( \mC^{-1} - \mC^{-1} \mA \mS \mA^\top \mC^{-1} \right) \vre.
+k &= \vre^\top \left( \mC^{-1} - \mC^{-1} \mA \mS \mA^\top \mC^{-1} \right) \vre
+    \quad.
 \end{align}
 %
 We may thus write
@@ -268,16 +265,17 @@ p(\vy | \vt) &= \frac{1}{
                 \exp \left[ -\frac{1}{2}k \right]
                 \int_{-\infty}^{\infty} \exp
                 \left[-\frac{1}{2}(\vw - \vh)^\top \mS^{-1} (\vw - \vh)
-                \right] \dd\vw.
+                \right] \dd\vw \quad.
 \end{align}
 %
 The integral is that of a Gaussian, which evaluates to
 $|2\pi\bvec{\Sigma}|^\frac{1}{2}$.
-By the Matrix Determinant Lemma and the Woodbury Identity \citeme,
+By the Matrix Determinant Lemma and the Woodbury Identity
+\citep[for example,][]{Woodbury:1950, Harville:1997},
 %
 \begin{align}
 |\mS| &= {|\mS^{-1}|}^{-1} = \frac{|\mL| |\mC|}{|\mC + \mA \mL \mA^\top|} \nonumber \\
-k &= \vre^\top \left( \mC + \mA \mL \mA^\top \right)^{-1} \vre.
+k &= \vre^\top \left( \mC + \mA \mL \mA^\top \right)^{-1} \vre \quad.
 \end{align}
 %
 Combining these results, the expression in \eq{p(y|t)ugly} simplifies to
@@ -288,7 +286,7 @@ p(\vy | \vt) &= \frac{1}{
                 \exp \left[ -\frac{1}{2} \big( \vy - \vm \big)^\top
                             (\mC + \mA \mL \mA^\top)^{-1}
                             \big( \vy - \vm \big)
-                     \right].
+                     \right] \quad.
 \end{align}
 %
 This is a normal distribution with mean $\vm$ and covariance
@@ -296,7 +294,7 @@ $\mC + \mA \mL \mA^\top$:
 %
 \begin{align}
 \eqlabel{p(y|t)normal}
-p(\vy | \vt) &= \Normal (\vy; \vm, \mC + \mA \mL \mA^\top).
+p(\vy | \vt) &= \Normal (\vy; \vm, \mC + \mA \mL \mA^\top) \quad.
 \end{align}
 
 \end{document}
