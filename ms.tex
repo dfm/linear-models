@@ -166,7 +166,7 @@ explicitly solving for the weights $\vw$.
 
 \section{The solution}
 
-The marginalized likelihood can be manipulated as follows:
+The marginalized likelihood can be manipulated as follows \alltodo{I (Hogg) would personally drop almost all the math details and jump with very little explanation (except for pointing towards math ideas) to the solution in \eq{p(y|t)normal}. Then use the liberated words to talk about why this is cool -- it lets you use big matrices $\mA$ and so on...}:
 \begin{align}
 \eqlabel{integral}
 p(\vy | \vt) &= \int_{-\infty}^{\infty} p(\vw) p(\vy | \vt, \vw) \dd\vw \nonumber \\
@@ -275,6 +275,10 @@ $\bvec{m}$ and covariance $\bvec{\Sigma}_\bvec{m}$ given by
     \left[\mC + \mA \mL \mA^\top\right]^{-1} \,
     \mA^\top \mL \mA
 \end{align}
+
+\section{The implications}
+
+\alltodo{What new powers has this given us and how will we use them for good?}
 
 \acknowledgements
 It is a pleasure to thank
