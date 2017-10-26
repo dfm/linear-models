@@ -37,8 +37,8 @@
 
 % math
 \newcommand{\T}{\ensuremath{\mathrm{T}}}
-\newcommand{\dd}{\ensuremath{\,\mathrm{d}}}
-\newcommand{\unit}[1]{{\ensuremath{\,\mathrm{#1}}}}
+\newcommand{\dd}{\ensuremath{ \mathrm{d}}}
+\newcommand{\unit}[1]{{\ensuremath{ \mathrm{#1}}}}
 \newcommand{\bvec}[1]{{\ensuremath{\boldsymbol{#1}}}}
 \newcommand{\Gaussian}[3]{\ensuremath{\frac{1}{|2\pi #2|^\frac{1}{2}}
             \exp\left[ -\frac{1}{2}#1^\top #2^{-1} #1 \right]}}
@@ -160,14 +160,14 @@ out the weights $\vw$; that is, we want to compute the marginalized
 likelihood
 %
 \begin{align}
-p(\vy | \vt) &= \int_{-\infty}^{\infty} p(\vw) p(\vy | \vt, \vw) \dd\vw
+p(\vy | \vt) &= \int_{-\infty}^{\infty} p(\vw)\,p(\vy | \vt, \vw) \dd\vw
 \end{align}
 and we would like to do it without doing any numerical integrals, and without
 explicitly solving for the weights $\vw$.
 
 \section{The solution}
 
-The marginalized likelihood can be manipulated as follows \alltodo{I (Hogg) would personally drop almost all the math details and jump with very little explanation (except for pointing towards math ideas) to the solution in \eq{p(y|t)normal}. Then use the liberated words to talk about why this is cool -- it lets you use big matrices $\mA$ and so on...}:
+The marginalized likelihood may be expressed as follows:
 \begin{align}
 \eqlabel{integral}
 p(\vy | \vt) 
@@ -205,7 +205,7 @@ where, by comparison with \eq{z}, it can be shown that
 \begin{align}
 \mS^{-1} &= \mL^{-1} + \mA^\top \mC^{-1} \mA \\
 %
-\vh &= \bvec{\Sigma}\mA^\top \mC^{-1} \vre \\
+\vh &= \bvec{\Sigma} \mA^\top \mC^{-1} \vre \\
 %
 k &= \vre^\top \left( \mC^{-1} - \mC^{-1} \mA \mS \mA^\top \mC^{-1} \right) \vre.
 \end{align}
@@ -268,11 +268,11 @@ $\bvec{m}$ and covariance $\bvec{\Sigma}_\bvec{m}$ given by
 \citep{Rasmussen:2006}
 %
 \begin{align}
-\bvec{m} &= \mu(\bvec{\theta}) + \mA \mL \mA^\top\, \left[\mC + \mA \mL
-    \mA^\top\right]^{-1}\,\left[\bvec{y} - \mu(\bvec{\theta})\right]
+\bvec{m} &= \mu(\bvec{\theta}) + \mA \mL \mA^\top  \left[\mC + 
+    \mA \mL \mA^\top\right]^{-1} \left[\bvec{y} - \mu(\bvec{\theta})\right]
     \nonumber\\
-\bvec{\Sigma}_\bvec{m} &= \mA \mL \mA^\top - \mA \mL \mA^\top\,
-    \left[\mC + \mA \mL \mA^\top\right]^{-1} \,
+\bvec{\Sigma}_\bvec{m} &= \mA \mL \mA^\top - \mA \mL \mA^\top 
+    \left[\mC + \mA \mL \mA^\top\right]^{-1}  
     \mA^\top \mL \mA
 \end{align}
 
