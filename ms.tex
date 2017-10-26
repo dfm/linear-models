@@ -167,6 +167,54 @@ explicitly solving for the weights $\vw$.
 
 \section{The solution}
 
+The marginalized likelihood may be expressed as follows (see Appendix):
+
+\begin{align}
+\eqlabel{p(y|t)normal}
+p(\vy | \vt) &= \Normal (\vy; \vm, \mC + \mA \mL \mA^\top).
+\end{align}
+
+This marginalized likelihood function can be numerically maximized to find the
+maximum likelihood parameters $\theta^\star$ or this likelihood can be
+multiplied by a prior $p(\theta)$ and used for posterior inference.
+In either case, the evaluation of the model will include the effects of
+marginalizing over $\bvec{w}$ in the linear model and any uncertainties in
+those values will be propagated to the results.
+
+It is often useful to compute the value of the linear model so that we can
+``remove'' systematics from the data.
+To derive this, we recognize that \eq{p(y|t)normal} is the likelihood of a
+Gaussian Process.
+This means that conditioned on the data and a choice of the parameters
+$\bvec{\theta}$, the systematics will have a Gaussian distribution with mean
+$\bvec{m}$ and covariance $\bvec{\Sigma}_\bvec{m}$ given by
+\citep{Rasmussen:2006}
+%
+\begin{align}
+\bvec{m} &= \mu(\bvec{\theta}) + \mA \mL \mA^\top  \left[\mC + 
+    \mA \mL \mA^\top\right]^{-1} \left[\bvec{y} - \mu(\bvec{\theta})\right]
+    \nonumber\\
+\bvec{\Sigma}_\bvec{m} &= \mA \mL \mA^\top - \mA \mL \mA^\top 
+    \left[\mC + \mA \mL \mA^\top\right]^{-1}  
+    \mA^\top \mL \mA
+\end{align}
+
+\section{The implications}
+
+\alltodo{What new powers has this given us and how will we use them for good?}
+
+\acknowledgements
+It is a pleasure to thank
+  Patrick Cooper (Duquesne),
+  Boris Leistedt (NYU),
+  Bernhard Sch\"olkopf (MPI-IS), and
+  Dun Wang (NYU)
+for helping us understand all of this.
+
+\bibliography{linear}
+
+\section{Appendix}
+
 The marginalized likelihood may be expressed as follows:
 \begin{align}
 \eqlabel{integral}
@@ -250,44 +298,5 @@ $\mC + \mA \mL \mA^\top$:
 \eqlabel{p(y|t)normal}
 p(\vy | \vt) &= \Normal (\vy; \vm, \mC + \mA \mL \mA^\top).
 \end{align}
-
-This marginalized likelihood function can be numerically maximized to find the
-maximum likelihood parameters $\theta^\star$ or this likelihood can be
-multiplied by a prior $p(\theta)$ and used for posterior inference.
-In either case, the evaluation of the model will include the effects of
-marginalizing over $\bvec{w}$ in the linear model and any uncertainties in
-those values will be propagated to the results.
-
-It is often useful to compute the value of the linear model so that we can
-``remove'' systematics from the data.
-To derive this, we recognize that \eq{p(y|t)normal} is the likelihood of a
-Gaussian Process.
-This means that conditioned on the data and a choice of the parameters
-$\bvec{\theta}$, the systematics will have a Gaussian distribution with mean
-$\bvec{m}$ and covariance $\bvec{\Sigma}_\bvec{m}$ given by
-\citep{Rasmussen:2006}
-%
-\begin{align}
-\bvec{m} &= \mu(\bvec{\theta}) + \mA \mL \mA^\top  \left[\mC + 
-    \mA \mL \mA^\top\right]^{-1} \left[\bvec{y} - \mu(\bvec{\theta})\right]
-    \nonumber\\
-\bvec{\Sigma}_\bvec{m} &= \mA \mL \mA^\top - \mA \mL \mA^\top 
-    \left[\mC + \mA \mL \mA^\top\right]^{-1}  
-    \mA^\top \mL \mA
-\end{align}
-
-\section{The implications}
-
-\alltodo{What new powers has this given us and how will we use them for good?}
-
-\acknowledgements
-It is a pleasure to thank
-  Patrick Cooper (Duquesne),
-  Boris Leistedt (NYU),
-  Bernhard Sch\"olkopf (MPI-IS), and
-  Dun Wang (NYU)
-for helping us understand all of this.
-
-\bibliography{linear}
 
 \end{document}
