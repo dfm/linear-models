@@ -40,7 +40,7 @@
 \newcommand{\dd}{\ensuremath{\,\mathrm{d}}}
 \newcommand{\unit}[1]{{\ensuremath{\,\mathrm{#1}}}}
 \newcommand{\bvec}[1]{{\ensuremath{\boldsymbol{#1}}}}
-\newcommand{\Gaussian}[3]{\ensuremath{\frac{1}{(2\pi)^\frac{#3}{2}|#2|^\frac{1}{2}}
+\newcommand{\Gaussian}[3]{\ensuremath{\frac{1}{|2\pi #2|^\frac{1}{2}}
             \exp\left[ -\frac{1}{2}#1^\top #2^{-1} #1 \right]}}
 
 % VECTORS AND MATRICES USED IN THIS PAPER
@@ -170,23 +170,27 @@ explicitly solving for the weights $\vw$.
 The marginalized likelihood can be manipulated as follows \alltodo{I (Hogg) would personally drop almost all the math details and jump with very little explanation (except for pointing towards math ideas) to the solution in \eq{p(y|t)normal}. Then use the liberated words to talk about why this is cool -- it lets you use big matrices $\mA$ and so on...}:
 \begin{align}
 \eqlabel{integral}
-p(\vy | \vt) &= \int_{-\infty}^{\infty} p(\vw) p(\vy | \vt, \vw) \dd\vw \nonumber \\
+p(\vy | \vt) 
+%             &= \int_{-\infty}^{\infty} p(\vw) p(\vy | \vt, \vw) \dd\vw \nonumber \\
 %
-             &= \int_{-\infty}^{\infty} \Gaussian{\vw}{\mL}{K} \nonumber\\
-             & \quad\quad\quad \times \Gaussian{(\vre - \mA \vw)}{\mC}{N}
-               \dd\vw \nonumber \\
+%             &= \int_{-\infty}^{\infty} \Gaussian{\vw}{\mL}{K} \nonumber\\
+%             & \quad\quad\quad \times \Gaussian{(\vre - \mA \vw)}{\mC}{N}
+%               \dd\vw \nonumber \\
 %
-             &= \frac{1}{(2 \pi)^\frac{K + N}{2} |\mL|^\frac{1}{2} |\mC|^\frac{1}{2}}
+             &= \frac{1}{|2\pi\mL|^\frac{1}{2} |2\pi\mC|^\frac{1}{2}}
                 \int_{-\infty}^{\infty} \exp \left[ -\frac{1}{2} z \right] \dd\vw
 \end{align}
 %
-where we have used $\vre = \vy - \vm$ and
+where
 %
 \begin{align}
 \eqlabel{z}
-z &= \vw^\top \mL^{-1} \vw + \vre^\top \mC^{-1} \vre -
-     2(\mA \vw)^\top \mC^{-1} \vre + (\mA \vw)^\top \mC^{-1} \mA \vw.
+%z &= \vw^\top \mL^{-1} \vw + \vre^\top \mC^{-1} \vre -
+%     2(\mA \vw)^\top \mC^{-1} \vre + (\mA \vw)^\top \mC^{-1} \mA \vw.
+z &= \vw^\top \mL^{-1} \vw + (\vre - \mA \vw)^\top \mC^{-1} (\vre - \mA \vw)
 \end{align}
+%
+and $\vre = \vy - \vm$.
 %
 The integral in \eq{integral} is easier to evaluate if we
 complete the square and write:
@@ -210,9 +214,9 @@ We may thus write
 %
 \begin{align}
 \eqlabel{p(y|t)ugly}
-p(\vy | \vt) &= \frac{1}{(2 \pi)^\frac{K + N}{2}
-                |\mL|^\frac{1}{2}
-                |\mC|^\frac{1}{2}}
+p(\vy | \vt) &= \frac{1}{
+                |2\pi\mL|^\frac{1}{2}
+                |2\pi\mC|^\frac{1}{2}}
                 \exp \left[ -\frac{1}{2}k \right]
                 \int_{-\infty}^{\infty} \exp
                 \left[-\frac{1}{2}(\vw - \vh)^\top \mS^{-1} (\vw - \vh)
@@ -220,24 +224,19 @@ p(\vy | \vt) &= \frac{1}{(2 \pi)^\frac{K + N}{2}
 \end{align}
 %
 The integral is that of a Gaussian, which evaluates to
-$(2\pi)^\frac{K}{2}|\bvec{\Sigma}|^\frac{1}{2}$.
-By the Matrix Determinant Lemma \citeme,
+$|2\pi\bvec{\Sigma}|^\frac{1}{2}$.
+By the Matrix Determinant Lemma and the Woodbury Identity \citeme,
 %
 \begin{align}
-|\mS| = {|\mS^{-1}|}^{-1} = \frac{|\mL| |\mC|}{|\mC + \mA \mL \mA^\top|}.
-\end{align}
-%
-Additionally, by the Woodbury Identity \citeme,
-%
-\begin{align}
+|\mS| &= {|\mS^{-1}|}^{-1} = \frac{|\mL| |\mC|}{|\mC + \mA \mL \mA^\top|} \nonumber \\
 k &= \vre^\top \left( \mC + \mA \mL \mA^\top \right)^{-1} \vre.
 \end{align}
 %
 Combining these results, the expression in \eq{p(y|t)ugly} simplifies to
 \begin{align}
 \eqlabel{p(y|t)exp}
-p(\vy | \vt) &= \frac{1}{(2 \pi)^\frac{N}{2}
-                |\mC + \mA \mL \mA^\top|^\frac{1}{2}}
+p(\vy | \vt) &= \frac{1}{
+                |2\pi(\mC + \mA \mL \mA^\top)|^\frac{1}{2}}
                 \exp \left[ -\frac{1}{2} \big( \vy - \vm \big)^\top
                             (\mC + \mA \mL \mA^\top)^{-1}
                             \big( \vy - \vm \big)
