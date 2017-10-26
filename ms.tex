@@ -195,7 +195,7 @@ $\bvec{\theta}$, the systematics will have a Gaussian distribution with mean
 $\bvec{m}$ and covariance $\bvec{\Sigma}_\bvec{m}$ given by
 \citep{Rasmussen:2006}
 %
-\begin{align}
+\begin{align}\eqlabel{pred}
 \bvec{m} &= \mu(\bvec{\theta}) + \mA \mL \mA^\top  \left[\mC +
     \mA \mL \mA^\top\right]^{-1} \left[\bvec{y} - \mu(\bvec{\theta})\right]
     \nonumber\\
@@ -203,6 +203,24 @@ $\bvec{m}$ and covariance $\bvec{\Sigma}_\bvec{m}$ given by
     \left[\mC + \mA \mL \mA^\top\right]^{-1}
     \mA^\top \mL \mA \quad.
 \end{align}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{figure.pdf}
+\caption{%
+(top): The black points show the raw light curve for the \project{K2} target
+    EPIC~204832142 multiplied by the time series for a simulated transiting
+    planet.
+    The simulated transit model is shown as a blue line.
+    We fit the systematics using the linear model from the \project{everest}
+    library \citep{Luger:2016, Luger:2017} and the prediction for the
+    systematics model (\eqalt{pred}) are shown as an orange line.
+(bottom): The same data from the top panel with the systematics model
+    subtracted.
+    The transit model is plotted in blue.
+\figurelabel{figure}}
+\end{center}
+\end{figure}
 
 \section{The implications}
 
