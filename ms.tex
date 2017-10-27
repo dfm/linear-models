@@ -17,6 +17,7 @@
 % Projects:
 \newcommand{\project}[1]{\textsf{#1}}
 \newcommand{\kepler}{\project{Kepler}}
+\newcommand{\ktwo}{\project{K2}}
 
 % references to text content
 \newcommand{\documentname}{\textsl{Note}}
@@ -83,20 +84,21 @@ methods: data analysis ---
 methods: statistical
 }
 
-\section{}
+\section{Introduction}
+
 The target of many astronomical studies is the recovery of tiny astrophysical
 signals living in a sea of uninteresting (but usually dominant) noise.
-In many contexts (for example, stellar time-series, or
+In many contexts (i.e., stellar time-series, or
 high-contrast imaging, or stellar spectroscopy), there are structured
-components to this noise caused by systematic
+components in this noise caused by systematic
 effects in the astronomical source, the atmosphere, the telescope, or
 the detector.
 More often than not, evaluation of the true physical model for these nuisances
 is computationally intractable and dependent on too many (unknown) parameters
 to allow rigorous probabilistic inference.
 
-Sometimes housekeeping data, and often the science data themselves,
-can be used as predictors of the systematic noise.
+Sometimes, housekeeping data---and often the science data themselves---can 
+be used as predictors of the systematic noise.
 Linear combinations of these predictors (or linear combinations of non-linear functions
 of these predictors) are often used as
 computationally tractable models that can capture the nuisances.
@@ -110,9 +112,9 @@ can be written in the form
 \eqlabel{linearmodel}
 \bvec{y} = \vm + \mA \vw + \mathrm{noise}
 \end{align}
-where $\vm$ is the column-vector expectation or mean model or the part of the model
+where $\vm$ is the column vector expectation or mean model or the part of the model
 that we care about, $\mA$ is a \emph{design matrix}, whose columns are basis
-vectors $\{\bvec{a}_j\}$ or predictors for the systematics,
+vectors (predictors) for the systematics,
 and $\vw$ is the vector of weights or amplitudes, one
 for each basis vector.
 \newpage
@@ -122,7 +124,7 @@ series data \citep{Smith:2012, Wang:2016, Luger:2016}, galaxy or stellar spectra
 \citep{Tsalmantza:2012, Ness:2015}, and imaging \citep{Fergus:2014,
 Wang:2017}.
 One issue with flexible data-driven models, however, is their tendency to
-over-fit and reduce the astrophysical signal of interest.
+overfit and reduce the astrophysical signal of interest.
 This is generally tackled using a dimensionality reduction technique like
 principal component analysis (PCA) or by applying strong priors or a
 regularization to the weights vector $\vw$.
@@ -132,7 +134,7 @@ Gaussian prior is placed on the weights $\vw$ of the linear
 components, the weights can be marginalized out with an operation in pure linear
 algebra, which can (often) be made fast.
 We illustrate this model by demonstrating the applicability of a linear model
-for the non-linear systematics in \kepler\ time-series data, where the dominant
+for the non-linear systematics in \ktwo\ time-series data, where the dominant
 noise source for many stars is spacecraft motion and variability.
 
 \section{The problem}
@@ -143,9 +145,9 @@ In the common case of data collected with measurement error $\sigma_i$ on
 individual data points but no correlation across measurements, $\mC$ is a
 diagonal matrix with $\mC_{ij} = \sigma_{i}\delta_{ij}$, although in general
 the off-diagonal elements capture the covariance between different
-measurements. Given a mean function $\vm$  and a linear model as in
+measurements. Given a linear model as in
 \eq{linearmodel}, the probability of the data under the model is given by a
-normal distribution with mean $\vm + \mA \vw$ and variance $\mC$:
+normal distribution with mean $\vm + \mA \vw$ and covariance $\mC$:
 %
 \begin{align}\eqlabel{likelihood}
 p(\vy | \vt, \vw) &= \Normal(\vy; \vm + \mA \vw, \mC) \quad.
@@ -154,25 +156,26 @@ p(\vy | \vt, \vw) &= \Normal(\vy; \vm + \mA \vw, \mC) \quad.
 However, we are specifically not interested in the \emph{value} of $\vw$.
 Instead, we will marginalize over it.
 To perform this marginalization we must place a prior on $\vw$ that we will
-assume to be Gaussian
+assume to be Gaussian:
 %
 \begin{align}
 p(\vw) &= \Normal(\vw; 0, \mL) \quad. \nonumber
 \end{align}
 %
-With this prior and likelihood in \eq{likelihood}, our goal is to marginalize
+With this prior and the likelihood in \eq{likelihood}, our goal is to marginalize
 out the weights $\vw$; that is, we want to compute the marginalized
-likelihood
+likelihood,
 %
 \begin{align}
-p(\vy | \vt) &= \int_{-\infty}^{\infty} p(\vw)\,p(\vy | \vt, \vw) \dd\vw
+p(\vy | \vt) &= \int_{-\infty}^{\infty} p(\vw)\,p(\vy | \vt, \vw) \dd\vw \quad.
 \end{align}
-and we would like to do it without doing any numerical integrals, and without
-explicitly solving for the weights $\vw$.
+%
+In doing so, we would like to avoid explicitly solving for the weights $\vw$
+while also avoiding the evaluation of numerical integrals.
 
 \section{The solution}
 
-The marginalized likelihood may be expressed as follows (see Appendix):
+The marginalized likelihood may be expressed as (see Appendix):
 %
 \begin{align}
 \eqlabel{p(y|t)normal}
@@ -180,7 +183,7 @@ p(\vy | \vt) &= \Normal (\vy; \vm, \mC + \mA \mL \mA^\top) \quad.
 \end{align}
 %
 This marginalized likelihood function can be numerically maximized to find the
-maximum likelihood parameters $\theta^\star$ or this likelihood can be
+maximum likelihood parameters $\theta^\star$ or it can be
 multiplied by a prior $p(\theta)$ and used for posterior inference.
 In either case, the evaluation of the model will include the effects of
 marginalizing over $\bvec{w}$ in the linear model and any uncertainties in
@@ -239,10 +242,10 @@ likelihood marginalized over the many linear parameters $\bvec{w}$.
 
 \acknowledgements
 It is a pleasure to thank
-  Patrick Cooper (Duquesne),
-  Boris Leistedt (NYU),
-  Bernhard Sch\"olkopf (MPI-IS), and
-  Dun Wang (NYU)
+  Patrick Cooper,
+  Boris Leistedt,
+  Bernhard Sch\"olkopf, and
+  Dun Wang
 for helping us understand all of this.
 
 \bibliography{linear}
@@ -322,7 +325,7 @@ This is a normal distribution with mean $\vm$ and covariance
 $\mC + \mA \mL \mA^\top$:
 %
 \begin{align}
-\eqlabel{p(y|t)normal}
+\eqlabel{p(y|t)normal_app}
 p(\vy | \vt) &= \Normal (\vy; \vm, \mC + \mA \mL \mA^\top) \quad.
 \end{align}
 
