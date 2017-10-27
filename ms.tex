@@ -182,7 +182,7 @@ As we show in the Appendix, the marginalized likelihood
 %
 \begin{align}
 \eqlabel{p(y|t)normal}
-p(\vy | \vt) &= \Normal (\vy; \vm, \mC + \mA \mL \mA^\top) \quad.
+p(\vy | \vt) = \Normal (\vy; \vm, \mC + \mA \mL \mA^\top) \quad.
 \end{align}
 %
 This marginalized likelihood function can be numerically maximized to find the
@@ -225,18 +225,20 @@ A prior can be used to mitigate overfitting while maintaining the flexibility
 of the model and the trick described in this note can be used to efficiently
 compute the likelihood marginalized over the many linear parameters $\bvec{w}$.
 
+In \Figure{figure}, hello
+
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=0.9\textwidth]{figure.pdf}
 \caption{%
-(top): The black points show the raw light curve for the \project{K2} target
+    (top): The black points show the raw light curve for the \project{K2} target
     EPIC~204832142 multiplied by the time series for a simulated transiting
     planet.
     The simulated transit model is shown as a blue line.
     We fit the systematics using the linear model from the \project{everest}
     library \citep{Luger:2016, Luger:2017} and the prediction for the
-    systematics model (\eqalt{pred}) are shown as an orange line.
-(bottom): The same data from the top panel with the systematics model
+    systematics model (\eqalt{pred}) is shown as an orange line.
+    (bottom): The same data from the top panel with the systematics model
     subtracted.
     The transit model is plotted in blue.
 \figurelabel{figure}}
