@@ -135,7 +135,7 @@ weights $\vw$ of the linear components, the weights can be marginalized out
 with an operation in pure linear algebra, which can (often) be made fast.
 We illustrate this model by demonstrating the applicability of a linear model
 for the non-linear systematics in \ktwo\ time-series data, where the dominant
-noise source for many stars is spacecraft motion and variability.
+noise source for many stars is spacecraft motion and variability.\\[0.125in]
 
 \section{The problem}
 
@@ -172,7 +172,7 @@ p(\vy | \vt) &= \int_{-\infty}^{\infty} p(\vw)\,p(\vy | \vt, \vw) \dd\vw \quad.
 \end{align}
 %
 In doing so, we would like to avoid explicitly solving for the weights $\vw$
-while also avoiding the evaluation of numerical integrals.
+while also avoiding the evaluation of numerical integrals.\\[0.125in]
 
 \section{The solution}
 
@@ -207,7 +207,7 @@ $\bvec{m}$ and covariance $\bvec{\Sigma}_\bvec{m}$ given by
 \bvec{\Sigma}_\bvec{m} &= \mA \mL \mA^\top - \mA \mL \mA^\top
     \left[\mC + \mA \mL \mA^\top\right]^{-1}
     \mA^\top \mL \mA \quad.
-\end{align}
+\end{align}\\
 
 \section{The implications}
 
@@ -233,8 +233,6 @@ the basic idea is that this linear model can be used to describe the noise
 introduced into the light curve by motion of the spacecraft's pointing.
 This can be combined with a physical model of a transiting planet to
 characterize the planet even when the signal is not visible in the raw data.
-
-
 
 \begin{figure}[h!]
 \begin{center}
