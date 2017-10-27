@@ -69,16 +69,17 @@
 }
 
 \author[0000-0002-0296-3826]{Rodrigo Luger}
-\affil{Department~of~Astronomy, University~of~Washington, Box 351580, Seattle, WA 98195, USA}
+\affil{Department~of~Astronomy, University~of~Washington, Seattle, WA}
 
 \author[0000-0002-9328-5652]{Daniel Foreman-Mackey}
-\affil{Center for Computational Astrophysics, Flatiron Institute, 162 Fifth Ave, New York, NY 10010, USA}
+\affil{Center for Computational Astrophysics, Flatiron Institute, New York, NY}
 
 \author[0000-0003-2866-9403]{David W. Hogg}
-\affil{Center for Computational Astrophysics, Flatiron Institute, 162 Fifth Ave, New York, NY 10010, USA}
-\affil{Center for Cosmology and Particle Physics, Department of Physics, New York University, 726 Broadway, New York, NY 10003, USA}
-\affil{Center for Data Science, New York University, 60 Fifth Ave, New York, NY 10011, USA}
-\affil{Max-Planck-Institut f\"ur Astronomie, K\"onigstuhl 17, D-69117 Heidelberg}
+\affil{Center for Computational Astrophysics, Flatiron Institute, New York, NY}
+\affil{Center for Cosmology and Particle Physics, Department of Physics, New
+York University, New York, NY}
+\affil{Center for Data Science, New York University, New York, NY}
+\affil{Max-Planck-Institut f\"ur Astronomie, Heidelberg, Germany}
 
 \keywords{%
 methods: data analysis ---
@@ -103,8 +104,7 @@ be used as predictors of the systematic noise.
 Linear combinations of these predictors (or linear combinations of non-linear functions
 of these predictors) are often used as
 computationally tractable models that can capture the nuisances.
-These linear models---that is, linear combinations of (possibly nonlinear) functions
-of various systematic predictors---can be used to fit and subtract systematics prior to
+These models can be used to fit and subtract systematics prior to
 investigation of the signals of interest, or they can be used in a
 simultaneous fit of the systematics and the signals.
 For our purposes, a \emph{linear model} for a column vector of data $\vy$
@@ -113,8 +113,8 @@ can be written in the form
 \eqlabel{linearmodel}
 \bvec{y} = \vm + \mA \vw + \mathrm{noise}
 \end{align}
-where $\vm$ is the column vector expectation or mean model or the part of the model
-that we care about, $\mA$ is a \emph{design matrix}, whose columns are basis
+where $\vm$ is the column vector expectation or mean model (the part of the model
+that we care about), $\mA$ is a \emph{design matrix}, whose columns are basis
 vectors (predictors) for the systematics,
 and $\vw$ is the vector of weights or amplitudes, one
 for each basis vector.
@@ -124,16 +124,15 @@ Similar models have been used to describe the systematics in astrophysical time
 series data \citep{Smith:2012, Wang:2016, Luger:2016}, galaxy or stellar spectra
 \citep{Tsalmantza:2012, Ness:2015}, and imaging \citep{Fergus:2014,
 Wang:2017}.
-One issue with flexible data-driven models, however, is their tendency to
-overfit and reduce the astrophysical signal of interest.
+One issue with flexible data-driven models is their tendency to overfit and
+reduce the astrophysical signal of interest.
 This is generally tackled using a dimensionality reduction technique like
 principal component analysis (PCA) or by applying strong priors or a
 regularization to the weights vector $\vw$.
 
-In this \documentname, we show that if a
-Gaussian prior is placed on the weights $\vw$ of the linear
-components, the weights can be marginalized out with an operation in pure linear
-algebra, which can (often) be made fast.
+In this \documentname, we show that if a Gaussian prior is placed on the
+weights $\vw$ of the linear components, the weights can be marginalized out
+with an operation in pure linear algebra, which can (often) be made fast.
 We illustrate this model by demonstrating the applicability of a linear model
 for the non-linear systematics in \ktwo\ time-series data, where the dominant
 noise source for many stars is spacecraft motion and variability.
@@ -222,10 +221,20 @@ computational and statistical---of the models.
 Linear models become more expressive as more basis components are added, but
 they also become prone to overfitting.
 A prior can be used to mitigate overfitting while maintaining the flexibility
-of the model and the trick described in this note can be used to efficiently
-compute the likelihood marginalized over the many linear parameters $\bvec{w}$.
+of the model and the trick described in this \documentname\ can be used to
+efficiently compute the likelihood marginalized over the many linear
+parameters $\bvec{w}$.
 
-In \Figure{figure}, hello
+\Figure{figure} shows an example where the marginalized likelihood function
+described here is used to fit a data-driven systematics model to a light curve
+from the \project{K2} mission.
+The details of this model appear elsewhere \citep{Luger:2016, Luger:2017}, but
+the basic idea is that this linear model can be used to describe the noise
+introduced into the light curve by motion of the spacecraft's pointing.
+This can be combined with a physical model of a transiting planet to
+characterize the planet even when the signal is not visible in the raw data.
+
+
 
 \begin{figure}[h!]
 \begin{center}
