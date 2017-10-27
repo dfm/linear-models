@@ -8,6 +8,7 @@
 \usepackage{amssymb}
 \usepackage{natbib}
 \usepackage{multirow}
+\usepackage{graphicx}
 \bibliographystyle{aasjournal}
 
 % ------------------ %
@@ -167,6 +168,7 @@ out the weights $\vw$; that is, we want to compute the marginalized
 likelihood,
 %
 \begin{align}
+\eqlabel{marglikeintegral}
 p(\vy | \vt) &= \int_{-\infty}^{\infty} p(\vw)\,p(\vy | \vt, \vw) \dd\vw \quad.
 \end{align}
 %
@@ -175,7 +177,8 @@ while also avoiding the evaluation of numerical integrals.
 
 \section{The solution}
 
-The marginalized likelihood may be expressed as (see Appendix):
+As we show in the Appendix, the marginalized likelihood 
+(\eqalt{marglikeintegral}) may be expressed as:
 %
 \begin{align}
 \eqlabel{p(y|t)normal}
@@ -183,7 +186,7 @@ p(\vy | \vt) &= \Normal (\vy; \vm, \mC + \mA \mL \mA^\top) \quad.
 \end{align}
 %
 This marginalized likelihood function can be numerically maximized to find the
-maximum likelihood parameters $\theta^\star$ or it can be
+maximum likelihood parameters $\theta^\star$, or it can be
 multiplied by a prior $p(\theta)$ and used for posterior inference.
 In either case, the evaluation of the model will include the effects of
 marginalizing over $\bvec{w}$ in the linear model and any uncertainties in
@@ -257,7 +260,7 @@ z &= \vw^\top \mL^{-1} \vw + (\vre - \mA \vw)^\top \mC^{-1} (\vre - \mA \vw)
 %
 and $\vre = \vy - \vm$.
 %
-The integral in \eq{integral} is easier to evaluate if we
+The integral is easier to evaluate if we
 complete the square and write:
 %
 \begin{align}
@@ -278,15 +281,30 @@ k &= \vre^\top \left( \mC^{-1} - \mC^{-1} \mA \mS \mA^\top \mC^{-1} \right) \vre
 %
 We may thus write
 %
+%\begin{align}
+%\eqlabel{p(y|t)ugly}
+%p(\vy | \vt) &= \frac{1}{
+%                |2\pi\mL|^\frac{1}{2}
+%                |2\pi\mC|^\frac{1}{2}}
+%                \exp \left[ -\frac{1}{2}k \right]
+%                \int_{-\infty}^{\infty} \exp
+%                \left[-\frac{1}{2}(\vw - \vh)^\top \mS^{-1} (\vw - \vh)
+%                \right] \dd\vw \quad.
+%\end{align}
 \begin{align}
 \eqlabel{p(y|t)ugly}
-p(\vy | \vt) &= \frac{1}{
+%\resizebox{0.92\textwidth}{!} 
+%{
+%$
+p(\vy | \vt) = \frac{1}{
                 |2\pi\mL|^\frac{1}{2}
                 |2\pi\mC|^\frac{1}{2}}
-                \exp \left[ -\frac{1}{2}k \right]
+                \exp \left[ -\frac{k}{2} \right]
                 \int_{-\infty}^{\infty} \exp
                 \left[-\frac{1}{2}(\vw - \vh)^\top \mS^{-1} (\vw - \vh)
                 \right] \dd\vw \quad.
+%$
+%}
 \end{align}
 %
 The integral is that of a Gaussian, which evaluates to
@@ -303,11 +321,11 @@ Combining these results, the expression in \eq{p(y|t)ugly} simplifies to
 \begin{align}
 \eqlabel{p(y|t)exp}
 p(\vy | \vt) &= \frac{1}{
-                |2\pi(\mC + \mA \mL \mA^\top)|^\frac{1}{2}}
-                \exp \left[ -\frac{1}{2} \big( \vy - \vm \big)^\top
-                            (\mC + \mA \mL \mA^\top)^{-1}
-                            \big( \vy - \vm \big)
-                     \right] \quad.
+                |2\pi(\mC {+} \mA \mL \mA^\top)|^\frac{1}{2}}
+                \exp \left[ {-}\frac{1}{2} \big( \vy\,{-}\,\vm \big)^\top
+                            (\mC {+} \mA \mL \mA^\top)^{-1}
+                            \big( \vy\,{-}\,\vm \big)
+                     \right].
 \end{align}
 %
 This is a normal distribution with mean $\vm$ and covariance
