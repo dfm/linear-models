@@ -177,7 +177,7 @@ while also avoiding the evaluation of numerical integrals.
 
 \section{The solution}
 
-As we show in the Appendix, the marginalized likelihood 
+As we show in the Appendix, the marginalized likelihood
 (\eqalt{marglikeintegral}) may be expressed as:
 %
 \begin{align}
@@ -212,15 +212,15 @@ $\bvec{m}$ and covariance $\bvec{\Sigma}_\bvec{m}$ given by
 
 \section{The implications}
 
-In the previous section, we derived an expression that can be used to compute
-the likelihood function for a linear model marginalized over the weights in
-the model.
+In the previous section, we presented an expression that can be used to
+compute the likelihood function for a linear model marginalized over the
+weights vector.
 Linear models have been used throughout the astrophysics literature as
 data-driven descriptions of complicated physical processes but, in some cases,
 this analytic marginalization could be applied to improve performance---both
 computational and statistical---of the models.
-Linear models like these become more expressive as more basis components are
-added, but they also become prone to overfitting.
+Linear models become more expressive as more basis components are added, but
+they also become prone to overfitting.
 A prior can be used to mitigate overfitting while maintaining the flexibility
 of the model and the trick described in this note can be used to efficiently
 compute the likelihood marginalized over the many linear parameters $\bvec{w}$.
@@ -304,7 +304,7 @@ We may thus write
 %\end{align}
 \begin{align}
 \eqlabel{p(y|t)ugly}
-%\resizebox{0.92\textwidth}{!} 
+%\resizebox{0.92\textwidth}{!}
 %{
 %$
 p(\vy | \vt) = \frac{1}{
